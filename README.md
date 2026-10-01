@@ -7,10 +7,10 @@ I’m a self‑taught Java programmer, UIL CS competitor, and high‑school vale
 Programs written while preparing for or competing in UIL Computer Science competitions. These include logic exercises, algorithm implementations, randomization experiments, and other small programs.
 
 ### Personal Projects
-Independent programs created out of curiosity or experimentation. These range from small utilities to exploratory code meant to test ideas or learn new concepts.
+Independent programs created out of curiosity or experimentation. These range from small utilities to exploratory code meant to test ideas or learn new concepts. This also includes the RBMK Nuclear Reactor game I programmed with Lua through Roblox Studio.
 
 ### School Related
-Java exercises completed for classwork or structured practice, and other school related codes, focusing on basic fundamentals such as loops, conditionals, arrays, and object‑oriented programming.
+Java exercises completed for classwork or structured practice, and other school-related code, focusing on basic fundamentals such as loops, conditionals, arrays, and object‑oriented programming.
 
 ## Purpose
 
@@ -18,6 +18,9 @@ This repository serves as a portfolio of my growth as a programmer. Many of thes
 
 ## Technologies Used
 - Java (JDK 8+)
+- Lua
+- VS Code
+- Roblox Studio
 - Eclipse IDE
 - Basic algorithms and data structures
 - Random, input, output, loops, conditionals, arrays
