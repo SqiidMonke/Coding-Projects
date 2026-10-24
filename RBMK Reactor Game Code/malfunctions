@@ -1,0 +1,98 @@
+local coolantPumpMalfunction = game.ReplicatedStorage.Malfunctions.coolantPumpMalfunctionEvent
+local coolantPipeLeak = game.ReplicatedStorage.Malfunctions.coolantPipeLeakEvent
+local VentilationClog = game.ReplicatedStorage.Malfunctions.VentilationClogEvent
+local SCRAMFailure = game.ReplicatedStorage.Malfunctions.SCRAMFailureEvent
+local SensorFailure = game.ReplicatedStorage.Malfunctions.SensorFailureEvent
+local SensorFailureChance = 10
+local numFailures = 0
+local timer = 0
+
+task.spawn(function() -- coolant pump malfunction
+	task.wait(20)
+	while true do
+		local rand = math.random(1, 6000)
+		local coolantPumpMalfunctionChance = 20 * ( - ( (math.sqrt(5 * numFailures) ) / 5 ) ) + 20
+		if rand <= coolantPumpMalfunctionChance then
+			coolantPumpMalfunction:Fire()
+			numFailures += 1
+		end
+		task.wait(1)
+	end
+end)
+
+task.spawn(function() -- coolant pipe leak
+	task.wait(20)
+	while true do
+		local rand = math.random(1, 6000)
+		local coolantPipeLeakChance = 30 * ( - ( (math.sqrt(5 * numFailures) ) / 5 ) ) + 30
+		if rand <= coolantPipeLeakChance then
+			coolantPipeLeak:Fire()
+			numFailures += 1
+		end
+		task.wait(1)
+	end
+end)
+
+task.spawn(function() -- ventilation clog
+	task.wait(20)
+	while true do
+		local rand = math.random(1, 6000)
+		local VentilationClogChance = 10 * ( - ( (math.sqrt(5 * numFailures) ) / 5 ) ) + 10
+		if rand <= VentilationClogChance then
+			VentilationClog:Fire()
+			numFailures += 1
+		end
+		task.wait(1)
+	end
+end)
+
+task.spawn(function() -- SCRAM Failure
+	task.wait(20)
+	while true do
+		local rand = math.random(1, 6000)
+		local SCRAMFailureChance = 20 * ( - ( (math.sqrt(5 * numFailures) ) / 5 ) ) + 20
+		if rand <= SCRAMFailureChance then
+			SCRAMFailure:Fire()
+			numFailures += 1
+		end
+		task.wait(1)
+	end
+end)
+
+task.spawn(function() -- Sensor Failure
+	task.wait(20)
+	while true do
+		local rand = math.random(1, 6000)
+		local SensorFailureChance = 10 * ( - ( (math.sqrt(5 * numFailures) ) / 5 ) ) + 10
+		if rand <= SensorFailureChance then
+			SensorFailure:Fire()
+			numFailures += 1
+		end
+		task.wait(1)
+	end
+end)
+
+task.spawn(function() -- timer
+	task.wait(20)
+	while true do
+		if numFailures > 0 then
+			timer = 0
+		end
+		if numFailures == 0 and timer >= 40 then
+			local rand = math.random(1, 9)
+			if rand < 2 then
+				VentilationClog:Fire()
+			elseif rand < 3 then 
+				SensorFailure:Fire()
+			elseif rand < 5 then
+				coolantPumpMalfunction:Fire()
+			elseif rand < 7 then
+				SCRAMFailure:Fire()
+			else
+				coolantPipeLeak:Fire()
+			end
+		end
+		timer += 1
+		task.wait(1)
+	end
+end)
