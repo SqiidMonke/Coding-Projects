@@ -1,0 +1,38 @@
+local model = script.Parent
+local pivot = model:GetPivot()
+local click = model:WaitForChild("ClickDetector")
+local isSwitched = false
+local onCoolDown = false
+local scramActivationEvent = game.ReplicatedStorage.SCRAMswitchEvent
+local scramCountdown = game.ReplicatedStorage.SCRAMcountdownEvent
+
+local rotation = CFrame.Angles(0, 0, math.rad(-45))
+model:PivotTo(pivot * rotation)
+
+click.MouseClick:Connect(function()
+	if isSwitched or onCoolDown then
+		return
+	end
+	isSwitched = not isSwitched
+	if isSwitched then
+		local rotation = CFrame.Angles(0, 0, math.rad(45))
+		model:PivotTo(pivot * rotation)
+		print("scram activated")
+	end
+	
+	scramActivationEvent:Fire(true)
+end)
+
+scramActivationEvent.Event:Connect(function(activated)
+	if not activated then
+		isSwitched = false
+		local rotation = CFrame.Angles(0, 0, math.rad(-45))
+		model:PivotTo(pivot * rotation)
+		print("timer started")
+		onCoolDown = true
+		scramCountdown:Fire(60)
+		task.wait(70)
+		onCoolDown = false
+		print("scram reset")
+	end
+end)
