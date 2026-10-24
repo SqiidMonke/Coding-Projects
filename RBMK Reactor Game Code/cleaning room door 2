@@ -1,0 +1,23 @@
+local door = script.Parent
+local doorEvent = game.ReplicatedStorage.sanitizingDoorEvent
+local lastDoorOpened = 1
+local smoke1 = script.Parent.Parent.smoke1
+local smoke2 = script.Parent.Parent.smoke2
+
+doorEvent.Event:Connect(function(doorNum, interior)
+	if doorNum == 1 then
+		print(lastDoorOpened)
+		if interior == true and lastDoorOpened == 2 then
+			smoke1.Smoke.Enabled = true
+			smoke2.Smoke.Enabled = true
+			task.wait(4)
+			smoke1.Smoke.Enabled = false
+			smoke2.Smoke.Enabled = false
+			task.wait(2)
+		end
+		door.CFrame += Vector3.new(0, 9.5, 0)
+		task.wait(3)
+		door.CFrame -= Vector3.new(0, 9.5, 0)
+	end
+	lastDoorOpened = doorNum
+end)
