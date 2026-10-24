@@ -1,0 +1,9 @@
+local prompt = script.Parent
+local fix = game.ReplicatedStorage.rodFixEvents.fix1
+
+prompt.Enabled = false
+
+prompt.Triggered:Connect(function()
+	prompt.Enabled = false
+	fix:Fire()
+end)
