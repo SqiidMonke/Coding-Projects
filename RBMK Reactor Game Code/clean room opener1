@@ -1,0 +1,18 @@
+local button = script.Parent
+local click = button:WaitForChild("ClickDetector")
+local sanitizing = false
+local doorOpened = false
+local doorEvent = game.ReplicatedStorage.sanitizingDoorEvent
+
+click.MouseClick:Connect(function()
+	if sanitizing or doorOpened then
+		return
+	end
+	doorEvent:Fire(1, false)
+end)
+
+doorEvent.Event:Connect(function()
+	doorOpened = true
+	task.wait(5)
+	doorOpened = false
+end)
