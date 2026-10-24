@@ -1,0 +1,44 @@
+local reactivity = 80
+local heat = 0
+local coolDownRate = 40
+local leverEvents = game.ReplicatedStorage.LeverSwitchEvents
+local xenonMaxEvents = game.ReplicatedStorage.xenonMaxEvents
+local text = game.StarterGui.heatCounter.TextLabel.Text
+local heatUpdateEvent = game.ReplicatedStorage.heatUpdateEvent
+local scramActivationEvent = game.ReplicatedStorage.SCRAMswitchEvent
+local meltdown = game.ReplicatedStorage.meltdownEvent
+
+for _, event in ipairs(leverEvents:GetChildren()) do
+	event.Event:Connect(function(isSwitched)
+		if isSwitched then
+			reactivity-=10
+		else
+			reactivity+=10
+		end
+	end)
+end
+
+scramActivationEvent.Event:Connect(function(switched)
+	if switched then
+		reactivity-=120
+	else
+		reactivity+=120
+	end
+end)
+
+task.spawn(function()
+	while true do
+		if heat >= 1000 then
+			heat = 1000
+			meltdown:Fire()
+			heatUpdateEvent:FireAllClients(heat)
+			break
+		end
+		heat += reactivity - coolDownRate
+		if heat < 0 then
+			heat = 0
+		end
+		heatUpdateEvent:FireAllClients(heat)
+		wait(3)
+	end
+end)
