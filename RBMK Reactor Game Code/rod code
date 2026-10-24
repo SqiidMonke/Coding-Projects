@@ -1,0 +1,97 @@
+local rod = script.Parent.graphite
+local leverEvent = game.ReplicatedStorage.LeverSwitchEvents.LeverSwitchEvent1
+local updown = game.ReplicatedStorage.upDownEvents.event1
+local xenonMax = game.ReplicatedStorage.xenonMaxEvents.xenonMax1
+local fix = game.ReplicatedStorage.rodFixEvents.fix1
+local scramActivationEvent = game.ReplicatedStorage.SCRAMswitchEvent
+local xenonBar = 0
+local isOn = false
+local count = 0
+local canRun = true
+
+function reset()
+	xenonBar = 0
+	count = 0
+	canRun = true
+end
+
+fix.Event:Connect(function()
+	reset()
+end)
+
+
+
+leverEvent.Event:Connect(function(isSwitched)
+	if isSwitched then
+		isOn = true
+		rod.CFrame -= rod.CFrame.RightVector * 20
+	else
+		isOn = false
+		rod.CFrame += rod.CFrame.RightVector * 20
+	end
+end)
+
+scramActivationEvent.Event:Connect(function(switched)
+	if switched and isOn then
+		leverEvent:Fire(false)
+	end
+end)
+
+task.spawn(function()
+	while true do
+		if not canRun then
+			task.wait()
+			continue
+		end
+		if isOn and xenonBar < 12 then
+			for i = 1, 1 do
+				task.wait(1)
+				if(not isOn) then
+					break
+				end
+				if (i == 1) then
+					if math.random(10) <= 9 then
+						xenonBar += 1
+						updown:Fire(true)
+					end
+				end
+			end
+		elseif not isOn and xenonBar > 0 then
+			for i = 1, 5 do
+				task.wait(1)
+				if(isOn) then
+					break
+				end
+				if (i == 5 and canRun) then
+					xenonBar-=1
+					updown:Fire(false)
+				end
+			end
+		else
+			task.wait()
+		end
+	end
+end)
+
+task.spawn(function()
+	while true do
+		if not canRun then
+			task.wait()
+			continue
+		end
+		if xenonBar >= 12 then
+			task.wait(.5)
+			if xenonBar >= 12 then
+				count += 1
+				xenonMax:Fire(true, count)
+				if(count >= 10) then
+					canRun = false
+					leverEvent:Fire(false)
+					game.Workspace.rods.rod1.prompt.ProximityPrompt.Enabled = true
+				end
+			end
+		else
+			task.wait()
+		end 
+	end
+end)
