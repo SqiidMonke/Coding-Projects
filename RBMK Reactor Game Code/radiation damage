@@ -1,0 +1,37 @@
+local part = script.Parent
+local damage = 5
+local inside = {}
+local protectedEvent = game.ReplicatedStorage.protectedEvent
+local protectedBool = false
+
+protectedEvent.Event:Connect(function(protected)
+	if protected then
+		protectedBool = true
+	end
+end)
+
+local function startDamage(humanoid)
+	if inside[humanoid] then return end
+	inside[humanoid] = true
+
+	task.spawn(function()
+		while inside[humanoid] and not protectedBool do
+			humanoid:TakeDamage(damage)
+			task.wait(2)
+		end
+	end)
+end
+
+part.Touched:Connect(function(hit)
+	local hum = hit.Parent:FindFirstChild("Humanoid")
+	if hum then
+		startDamage(hum)
+	end
+end)
+
+part.TouchEnded:Connect(function(hit)
+	local hum = hit.Parent:FindFirstChild("Humanoid")
+	if hum then
+		inside[hum] = nil
+	end
+end)
