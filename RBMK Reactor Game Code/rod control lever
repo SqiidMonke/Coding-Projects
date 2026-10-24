@@ -1,0 +1,60 @@
+//There are 8 control levers in game for 8 rods
+local model = script.Parent
+local pivot = model:GetPivot()
+local click = model:WaitForChild("ClickDetector")
+local isSwitched = false
+local onCoolDown = false
+local LeverSwitchEvent = game.ReplicatedStorage.LeverSwitchEvents.LeverSwitchEvent1
+local xenonMax = game.ReplicatedStorage.xenonMaxEvents.xenonMax1
+local fix = game.ReplicatedStorage.rodFixEvents.fix1
+local scramActivationEvent = game.ReplicatedStorage.SCRAMswitchEvent
+local failure = false
+
+local rotation = CFrame.Angles(0, 0, math.rad(-45))
+model:PivotTo(pivot * rotation)
+
+fix.Event:Connect(function()
+	failure = false
+	isSwitched = false
+end)
+
+scramActivationEvent.Event:Connect(function(switched)
+	if switched then
+		local rotation = CFrame.Angles(0, 0, math.rad(-45))
+		model:PivotTo(pivot * rotation)
+		isSwitched = false
+		onCoolDown = true
+	else
+		wait(10)
+		onCoolDown = false
+	end
+end)
+
+xenonMax.Event:Connect(function(broken, count)
+	if count >= 10 then
+		failure = true
+		local rotation = CFrame.Angles(0, 0, math.rad(-45))
+		model:PivotTo(pivot * rotation)
+	end
+end)
+
+click.MouseClick:Connect(function()
+	if failure or onCoolDown then
+		return
+	end
+	isSwitched = not isSwitched
+	onCoolDown = true
+	if isSwitched then
+		local rotation = CFrame.Angles(0, 0, math.rad(45))
+		model:PivotTo(pivot * rotation)
+		print("rotated forward")
+	else
+		local rotation = CFrame.Angles(0, 0, math.rad(-45))
+		model:PivotTo(pivot * rotation)
+		print("rotated backward")
+	end
+	
+	LeverSwitchEvent:Fire(isSwitched)
+	task.wait(3)
+	onCoolDown = false
+end)
