@@ -1,0 +1,20 @@
+local xenonMax = game.ReplicatedStorage.xenonMaxEvents.xenonMax1
+local fix = game.ReplicatedStorage.rodFixEvents.fix1
+local part = script.Parent
+local count = 0
+
+fix.Event:Connect(function()
+	part.Color = Color3.fromRGB(32, 177, 0)
+	count = 0
+end)
+
+xenonMax.Event:Connect(function()
+	part.CFrame -= part.CFrame.LookVector * .125
+	part.Size -= Vector3.new(0, 0, .25)
+	count += 1
+	if(count >= 10) then
+		part.Color = Color3.fromRGB(0, 0, 0)
+		part.Size += 10 * (Vector3.new(0, 0, .25))
+		part.CFrame += 10 * (part.CFrame.LookVector * .125)
+	end
+end)
