@@ -1,0 +1,37 @@
+local button = script.Parent
+local rig = script.Parent.Parent.Rig
+local mask = rig.gasmask
+local pants = rig.pants
+local shirt = rig.shirt
+local protectedEvent = game.ReplicatedStorage.protectedEvent
+
+button.Touched:Connect(function(hit)
+	local character = hit.Parent
+	if not character then return end
+
+	local humanoid = character:FindFirstChild("Humanoid")
+	if not humanoid then return end
+
+	local player = game.Players:GetPlayerFromCharacter(character)
+	if not player then return end
+
+	local charShirt = character:FindFirstChildOfClass("Shirt")
+	local charPants = character:FindFirstChildOfClass("Pants")
+	local gasmaskclone = mask:Clone()
+	
+	if gasmaskclone:FindFirstChild("Handle") then
+		gasmaskclone.Handle.Anchored = false
+	end
+	
+	humanoid:AddAccessory(gasmaskclone)
+
+	if charShirt and shirt then
+		charShirt.ShirtTemplate = shirt.ShirtTemplate
+	end
+
+	if charPants and pants then
+		charPants.PantsTemplate = pants.PantsTemplate
+	end
+	
+	protectedEvent:Fire(true)
+end)
