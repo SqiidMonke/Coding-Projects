@@ -1,4 +1,4 @@
-# Coding Projects Collection
+# High School Coding Projects Collection
 I’m a self‑taught Java programmer, UIL CS competitor, and high‑school valedictorian with a passion for computer science. These are my Java projects through out my high school years.
 
 ## Project Categories
