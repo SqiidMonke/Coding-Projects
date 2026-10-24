@@ -1,0 +1,24 @@
+local activated = false
+local switch = game.ReplicatedStorage.LeverSwitchEvents.LeverSwitchEvent1
+local max = game.ReplicatedStorage.xenonMaxEvents.xenonMax1
+local label = script.Parent.SurfaceGui.TextLabel
+
+switch.Event:Connect(function(isSwitched)
+	if isSwitched then
+		activated = true
+		label.Text = "ACTIVATED"
+		label.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+	else
+		activated = false
+		label.Text = "DEACTIVATED"
+		label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	end
+end)
+
+max.Event:Connect(function(fail, count)
+	if fail and count >= 10 then
+		activated = false
+		label.Text = "INACTIVE"
+		label.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+	end
+end)
