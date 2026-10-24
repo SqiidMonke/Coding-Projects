@@ -1,3 +1,4 @@
+// There are 8 rods in game
 local rod = script.Parent.graphite
 local leverEvent = game.ReplicatedStorage.LeverSwitchEvents.LeverSwitchEvent1
 local updown = game.ReplicatedStorage.upDownEvents.event1
@@ -17,9 +18,7 @@ end
 
 fix.Event:Connect(function()
 	reset()
-end)
-
-
+end
 
 leverEvent.Event:Connect(function(isSwitched)
 	if isSwitched then
