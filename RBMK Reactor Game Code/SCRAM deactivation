@@ -1,0 +1,18 @@
+local button = script.Parent
+local click = button:WaitForChild("ClickDetector")
+local enabled = false
+local activationEvent = game.ReplicatedStorage.SCRAMswitchEvent
+
+click.MouseClick:Connect(function()
+	if not enabled then
+		return
+	end
+	activationEvent:Fire(false)
+	enabled = false
+end)
+
+activationEvent.Event:Connect(function(on)
+	if on then
+		enabled = true
+	end
+end)
