@@ -1,0 +1,18 @@
+local SCRAMcountdownEvent = game.ReplicatedStorage.SCRAMcountdownEvent
+local timer = script.Parent.SurfaceGui.TextLabel
+local minutesLeft
+local secondsLeft
+local remainingTime
+
+SCRAMcountdownEvent.Event:Connect(function(seconds)
+	timer.Text = "REBOOTING REACTOR"
+	task.wait(10)
+	local endTime = os.clock() + seconds + 1
+	while os.clock() < endTime do
+		remainingTime = math.floor(endTime - os.clock())
+		minutesLeft = math.floor(remainingTime / 60)
+		secondsLeft = math.floor(remainingTime % 60)
+		timer.Text = string.format("%02d:%02d", minutesLeft, secondsLeft)
+		task.wait(0.1)
+	end
+end)
