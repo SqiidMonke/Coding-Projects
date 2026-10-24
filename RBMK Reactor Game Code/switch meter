@@ -1,0 +1,42 @@
+local updown = game.ReplicatedStorage.upDownEvents.event1
+local max = game.ReplicatedStorage.xenonMaxEvents.xenonMax1
+local fix = game.ReplicatedStorage.rodFixEvents.fix1
+local part = script.Parent
+local count = 0
+
+fix.Event:Connect(function()
+	part.CFrame -= 12 * part.CFrame.RightVector * .125
+	part.Size -= 12 *Vector3.new(.25, 0, 0)
+	part.Color = Color3.fromRGB(32, 177, 0)
+	count = 0
+end)
+
+updown.Event:Connect(function(bool)
+	if bool then
+		part.CFrame += part.CFrame.RightVector * .125
+		part.Size += Vector3.new(.25, 0, 0)
+		count += 1
+	else
+		part.CFrame -= part.CFrame.RightVector * .125
+		part.Size -= Vector3.new(.25, 0, 0)
+		count -= 1
+	end
+	if count < 4 then
+		part.Color = Color3.fromRGB(32, 177, 0)
+	else if count >= 4 and count < 7 then
+			part.Color = Color3.fromRGB(139, 177, 0)
+		else if count >=7 and count < 10 then
+				part.Color = Color3.fromRGB(166, 91, 0)
+				else if count >= 10 then
+					part.Color = Color3.fromRGB(166, 0, 0)
+				end
+			end
+		end
+	end
+end)
+
+max.Event:Connect(function(fail, count)
+	if fail and count >= 10 then
+		part.Color = Color3.fromRGB(0, 0, 0)
+	end
+end)
